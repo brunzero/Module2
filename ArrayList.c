@@ -171,7 +171,6 @@ void printArrayList(ArrayList *list)
                 char* tempString = list->array[i];
                 temp = tempString[0];
                 printf("%s\n", list->array[i]);
-                printf("The ascii value is --> %d\n", temp);
             }
         }
     }

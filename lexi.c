@@ -11,7 +11,7 @@ typedef struct Token
 
 void errorCheck();
 void printLexemeList();
-void  cleanArrayList();
+void cleanArrayList();
 void load();
 int isSymbol(int x);
 void printCleanInput();
@@ -69,74 +69,74 @@ int main()
     output = fopen("cleaninput.txt", "w");
     initArrays();
     load();
-    printCleanInput();
+    iradicateComments(codeArray);
+    //printCleanInput();
     cleanArrayList();
+    //printArrayList(codeArray);
     findToken();
     errorCheck();
     printLexemeTable();
     printLexemeList();
-    //printTest();
+    //printTest();*/
     return 0;
+}
+
+
+void erase(char *buffer)
+{
+    int j;
+    for(j=0; j<256; j++)
+    {
+        buffer[j] = NULL;
+    }
 }
 
 //function responsible for retrieving data from the input file and then loading it to the code array for
 //code output and further token processing.
 void load()
 {
-    codeCount = 0;
+    char buffer[256];
     char symbolBuffer[2];
     int i = 0;
-    int x, prev = 0, codeIndex, endSwitch = 0, commentSwitch = 0;
+    int z, x, codeIndex;
+    for(z = 0; z<256; z++)
+    {
+        buffer[z] = NULL;
+    }
+    codeFile = fopen("input.txt", "r");
     if(!codeFile)
     {
         printf("Error in opening the file.");
         exit(0);
+
     }
-    while (isEnd() != 1)
+    while ((x = fgetc(codeFile)) != EOF)
     {
-        x = fgetc(codeFile);
-        //printf("%d", codeCount);
-        //printf("this iteration of x is %c \n", x);
-        char tempString [256];
 
         if(isSymbol(x))
         {
-            if(x == '*')
-            {
-                skipComment();
-                prev = 33;
-                continue;
-            }
+            //if(*buffer=='\n')
+               // printf("hello");
+            if(*buffer!=0)
+                put(codeArray, buffer);
 
-            if(!isSymbol(prev))
-            {
-                codeCount += 2;
-               //printf("\nthe string is %c%c%c\n", buffer[0],buffer[1],buffer[2]);
-               put(codeArray, buffer);
-               //printf("\n%s\n", buffer);
-            }
+            erase(buffer);
+
 
             symbolBuffer[0] = x;
-            symbolBuffer[1] = '\0';
+            //symbolBuffer[1] = '\0';
+
             put(codeArray, symbolBuffer);
-            //printf("\n%s\n", symbolBuffer);
+            erase(symbolBuffer);
             i = 0;
         }
         else
         {
-            codeCount ++;
             buffer[i] = x;
             buffer[i+1] = '\0';
             i++;
         }
-        prev = x;
-        //printf("%d\n", codeCount);
     }
-    put(codeArray, "end");
-    put(codeArray, ".");
-    //printArrayList(codeArray);
-    fclose(codeFile);
-
 }
 
 int isSymbol(int x)
@@ -187,15 +187,17 @@ void skipComment()
 }
 void printTest()
 {
-    for(int i = 0; i < codeArray->size; i ++)
+    int i;
+    for(i = 0; i < codeArray->size; i ++)
         printf("%s\n", codeArray->array[i]);
 }
 
 void cleanArrayList()
 {
+    int i;
     char* tempString;
     int temp;
-    for(int i = 0; i < codeArray ->size; i ++)
+    for(i = 0; i < codeArray ->size; i ++)
     {
         tempString = get(codeArray, i);
         temp = tempString[0];
@@ -217,6 +219,7 @@ void findToken()
     {
             string = get(codeArray, getter);
             bos = string[0];
+            printf("%s\n", get(codeArray, getter));
             if(isLetter(bos))
             {
                 if(wordSwitch(string))
@@ -381,6 +384,26 @@ int wordSwitch(char *string)
     }
 }
 
+void iradicateComments(ArrayList *arrayList)
+{
+    int i;
+    for(i = 0; i<arrayList->size; i++)
+    {
+        if(*get(arrayList, i)=='/')
+        {
+            if(*get(arrayList, i+1)=='*')
+            {
+                while(*get(arrayList, i+1)!='/')
+                {
+                    removeElement(arrayList, i);
+                }
+                    removeElement(arrayList, i);
+                    removeElement(arrayList, i);
+            }
+        }
+    }
+}
+
 int isNumber(char *string)
 {
     int number = string[0];
@@ -457,7 +480,7 @@ int symbolSwitch(char *string)
             getter ++;
             break;
         default:
-            printf("Invalid symbol.");
+            printf("\nInvalid symbol.\n");
             exit(1);
     }
 }
@@ -555,8 +578,13 @@ void errorCheck()
         letter = word[1];
         if(isNumber(word) && isLetter(letter))
         {
-            printf("invalid variable. Can not start with a number.");
+           // printf("Error on line: %d\n", line);
+            printf("Invalid variable. Can not start with a number.");
             exit(1);
+        }
+        if(strlen(word)>256)
+        {
+            printf("A string is larger than 256 characters");
         }
         i ++;
     }
