@@ -13,17 +13,23 @@
 
 1433747839 c:\users\eric\cop 3402 projects\lexi analyzer\arraylist.h
 
-1434336776 source:c:\users\bruno\documents\github\module2\lexi.c
+1434341447 source:c:\users\bruno\documents\github\module2\lexi.c
 	<stdio.h>
 	<stdlib.h>
 	"ArrayList.c"
 	<string.h>
 
-1434333278 c:\users\bruno\documents\github\module2\arraylist.c
+1434337130 c:\users\bruno\documents\github\module2\arraylist.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"ArrayList.h"
 
 1434324657 c:\users\bruno\documents\github\module2\arraylist.h
+
+1434339972 source:c:\users\bruno\documents\github\module2\lexi2.c
+	<stdio.h>
+	<stdlib.h>
+	"ArrayList.c"
+	<string.h>
 

@@ -1,6 +1,7 @@
-var x, y, z, h, e;
-begin 
-  y := 3; /* This is a comment */
-  x := y + 56; /* So is this */
-end
-write 3.
+var
+x, y, d, z;
+begin
+y := 3;
+/* This is a comment */
+x := y + 56;
+end.
